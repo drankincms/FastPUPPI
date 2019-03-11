@@ -238,7 +238,7 @@ L1PFCompare::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
        dummy.first = tmp;
        dummy.second = (*pfParticles)[i].pdgId();
        pfTmp.push_back(dummy);
-       std::cout<<"pf ID "<<(*pfParticles)[i].pdgId()<<" Pt "<<tmp.Pt()<<" Eta "<<tmp.Eta()<<" Phi "<<tmp.Phi()<<std::endl;
+       //std::cout<<"pf ID "<<(*pfParticles)[i].pdgId()<<" Pt "<<tmp.Pt()<<" Eta "<<tmp.Eta()<<" Phi "<<tmp.Phi()<<std::endl;
    }
    std::sort(pfTmp.begin(),pfTmp.end(),L1PFCompare::sortPt);
    for (size_t i = 0; i < std::min(pfTmp.size(),(size_t)maxN_); i++) {pf_.push_back(pfTmp[i]);}
@@ -273,7 +273,7 @@ L1PFCompare::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
        std::get<2>(dumtup) = tauIndex;
        //std::cout<<"gen ID "<<p.pdgId()<<" Pt "<<tmp.Pt()<<" PHFS "<<p.fromHardProcessFinalState()<<" HP "<<p.isHardProcess()<<" FS "<<p.isPromptFinalState()<<std::endl;
        //std::cout<<"\tVtx (x,y,z) = "<<p.vx()<<" "<<p.vy()<<" "<<p.vz()<<std::endl;
-       std::cout<<"gen ID "<<p.pdgId()<<" Pt "<<tmp.Pt()<<" Eta "<<tmp.Eta()<<" Phi "<<tmp.Phi()<<" DPTDPFS "<<p.isDirectPromptTauDecayProductFinalState()<<std::endl;
+       //std::cout<<"gen ID "<<p.pdgId()<<" Pt "<<tmp.Pt()<<" Eta "<<tmp.Eta()<<" Phi "<<tmp.Phi()<<" DPTDPFS "<<p.isDirectPromptTauDecayProductFinalState()<<std::endl;
        genFull.push_back(dumtup);
    }
    for (size_t i = 0; i < genParticles->size(); i++){
