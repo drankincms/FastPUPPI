@@ -110,9 +110,9 @@ for l_ in  __labelsInSequence(process,"l1ParticleFlow_proper"):
 process.l1ParticleFlow1.replace("l1pfProducerBarrel","l1pfProducerBarrel1")
 process.l1ParticleFlow1.replace("l1pfProducerHGCal","l1pfProducerHGCal1")
 process.l1ParticleFlow1.replace("l1pfProducerHF","l1pfProducerHF1")
-process.l1pfProducerBarrel1.vtxNum = cms.untracked.uint32(10)
-process.l1pfProducerHGCal1.vtxNum = cms.untracked.uint32(10)
-process.l1pfProducerHF1.vtxNum = cms.untracked.uint32(10)
+process.l1pfProducerBarrel1.vtxNum = cms.untracked.uint32(1)
+process.l1pfProducerHGCal1.vtxNum = cms.untracked.uint32(1)
+process.l1pfProducerHF1.vtxNum = cms.untracked.uint32(1)
 process.l1pfCandidates1.pfProducers = cms.VInputTag(
         cms.InputTag("l1pfProducerBarrel1"),
         cms.InputTag("l1pfProducerHGCal1"),
