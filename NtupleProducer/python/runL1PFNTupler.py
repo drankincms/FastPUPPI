@@ -51,17 +51,6 @@ process.runPF = cms.Sequence(
     + process.l1PuppiForMET
 )
 
-process.ntuple0 = cms.EDAnalyzer("L1PFCompare",
-    #pf = cms.InputTag("l1pfProducer:PF"),
-    pf = cms.InputTag("l1pfCandidates:PF"),
-    #pup = cms.InputTag("l1pfProducer:Puppi"),
-    pup = cms.InputTag("l1pfCandidates:Puppi"),
-    generator = cms.InputTag('genParticles'),
-    minPt = cms.double(2.),
-    maxEta = cms.double(6.),
-    maxN = cms.uint32(9999),
-)
-
 #FROM MET TOOLS
 class GatherAllModulesVisitor(object):
     """Visitor that travels within a cms.Sequence, and returns a list of objects of type gatheredInance(e.g. modules) that have it"""
@@ -100,14 +89,20 @@ def __labelsInSequence(process, sequenceLabel, postfix="", keepPostFix=False):
 
 
 
+process.ntuple0 = cms.EDAnalyzer("L1PFCompare",
+    #pf = cms.InputTag("l1pfProducer:PF"),
+    pf = cms.InputTag("l1pfCandidates:PF"),
+    #pup = cms.InputTag("l1pfProducer:Puppi"),
+    pup = cms.InputTag("l1pfCandidates:Puppi"),
+    generator = cms.InputTag('genParticles'),
+    minPt = cms.double(2.),
+    maxEta = cms.double(6.),
+    maxN = cms.uint32(9999),
+)
+
 process.l1ParticleFlow1 = cms.Sequence()
 for l_ in  __labelsInSequence(process,"l1ParticleFlow_proper"):
-    if (hasattr(getattr(process,l_),"_seq")):
-        for l__ in __labelsInSequence(process,l_):
-            newl = getattr(process,l__).clone()
-            setattr(process,l__+"1",newl)
-            process.l1ParticleFlow1 += getattr(process,l__+"1")
-    else:
+    if (not hasattr(getattr(process,l_),"_seq")):
         newl = getattr(process,l_).clone()
         setattr(process,l_+"1",newl)
         process.l1ParticleFlow1 += getattr(process,l_+"1")
@@ -115,11 +110,16 @@ for l_ in  __labelsInSequence(process,"l1ParticleFlow_proper"):
 process.l1ParticleFlow1.replace("l1pfProducerBarrel","l1pfProducerBarrel1")
 process.l1ParticleFlow1.replace("l1pfProducerHGCal","l1pfProducerHGCal1")
 process.l1ParticleFlow1.replace("l1pfProducerHF","l1pfProducerHF1")
-process.l1pfProducerBarrel1.vtxNum = cms.untracked.uint32(1)
-process.l1pfProducerHGCal1.vtxNum = cms.untracked.uint32(1)
-process.l1pfProducerHF1.vtxNum = cms.untracked.uint32(1)
+process.l1pfProducerBarrel1.vtxNum = cms.untracked.uint32(10)
+process.l1pfProducerHGCal1.vtxNum = cms.untracked.uint32(10)
+process.l1pfProducerHF1.vtxNum = cms.untracked.uint32(10)
+process.l1pfCandidates1.pfProducers = cms.VInputTag(
+        cms.InputTag("l1pfProducerBarrel1"),
+        cms.InputTag("l1pfProducerHGCal1"),
+        cms.InputTag("l1pfProducerHF1")
+    )
 
-process.ntuple1 = process.ntuple0.clone()
+process.ntuple1 = process.ntuple0.clone(pf = cms.InputTag("l1pfCandidates1:PF"), pup = cms.InputTag("l1pfCandidates1:Puppi"))
 
 process.p = cms.Path(process.runPF + process.ntuple0 + process.l1ParticleFlow1 + process.ntuple1)
 
